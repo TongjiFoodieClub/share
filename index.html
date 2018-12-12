@@ -133,14 +133,10 @@ function deletepic(e){
 }
 function submit(){
 	var title=document.getElementById('title').value;
-	var content=document.getElementById('content').value;
 	var site=document.getElementById('site').value;
 	var people=document.getElementById('people').value;
 	if(!title){
-		alert('请输入标题！');
-	}
-	else if(!content){
-		alert('请输入内容！');
+		alert('请输入分享内容！');
 	}
 	else if(!picurl){
 		alert('请添加图片！');
@@ -156,7 +152,6 @@ function submit(){
 		document.getElementById('loadingToast').style.display='block';
 		const query = Bmob.Query('squre');
 		query.set("title",title)
-		query.set("content",content)
 		query.set("pic",picurl)
 		query.set("site",site)
 		query.set("people",people)
