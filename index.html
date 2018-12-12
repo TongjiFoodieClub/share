@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>美食分享</title>
+    <link rel="stylesheet" href="style/weui.min.css"/>
+</head>
+<style>
+body{background-color:#f8f8f8}
+.page__hd{padding:40px}
+.page__title{text-align:left;font-size:20px;font-weight:400}
+.page__desc{margin-top:5px;color:#888;text-align:left;font-size:14px}
+</style>
+<body>
+	<div class="page__hd">
+        <h1 class="page__title">美食分享</h1>
+        <p class="page__desc">同济吃货小分队</p>
+    </div>
+	<div class="weui-cells__title">标题</div>
+    <div class="weui-cells">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <input id='title' class="weui-input" type="text" placeholder="请输入标题"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells__title">内容</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea id='content' class="weui-textarea" placeholder="请输入内容" rows="3"></textarea>
+                <div class="weui-textarea-counter"><span id="textCount">0</span>/200</div>
+            </div>
+        </div>
+    </div>
+	<div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">图片上传</p>
+                            <div class="weui-uploader__info"><span id="picCount">0</span>/9</div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                            </ul>
+                            <div class="weui-uploader__input-box">
+                                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="weui-cells">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="img/site.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+                <p>地点</p>
+            </div>
+            <input class="weui-cell__ft" id='site' style='border:0;width:80%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='在哪里吃的美食呀'></input>
+        </div>
+		<div class="weui-cell">
+            <div class="weui-cell__hd"><img src="img/people.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+                <p>小伙伴</p>
+            </div>
+            <input class="weui-cell__ft" id='people' style='border:0;width:80%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='和哪些小伙伴一起享受呢'></input>
+        </div>
+    </div>
+	<div class="weui-btn-area">
+        <div class="weui-btn weui-btn_primary" onclick='submit()'>提交</div>
+    </div>
+	<div id='gallery' class="weui-gallery" style="display:none">
+        <span id='gallery_img' class="weui-gallery__img" onclick='hiddenpre()' style="background-image: url();"></span>
+        <div class="weui-gallery__opr">
+            <div id='pic_del' onclick='deletepic(this)' class="weui-gallery__del">
+                <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+            </div>
+        </div>
+    </div>
+	<div id="loadingToast" style="display:none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">图片上传中</p>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="src/Bmob-1.6.3.min.js"></script>
+<script>
+Bmob.initialize("6967bbe6b3a113a0080572ff2c4ce864", "2c9b309a0ae57f1fc7259a6bbd4d9adf");
+var picArr=[];
+const fileUploadControl = document.getElementById('uploaderInput');
+fileUploadControl.onchange = () => {
+  document.getElementById('loadingToast').style.display='block';
+  const pic = fileUploadControl.files
+  let file
+  for(let item of pic){
+     file = Bmob.File(item.name, item);
+  }
+  file.save().then(res => {
+	var ul=document.getElementById('uploaderFiles');
+    for(var i=0;i<res.length;i++){
+		console.log(res[i].url)
+		ul.innerHTML+='<li class="weui-uploader__file" onclick="preview(this)" id='+res[i].url+' style="background-image:url('+res[i].url+')"></li>';
+		picArr.push(res[i].url);
+	}
+	document.getElementById('loadingToast').style.display='none';
+	document.getElementById('picCount').innerHTML = res.length;
+  })
+}
+function preview(e){
+	var url=e.id;
+	document.getElementById('gallery_img').style.backgroundImage='url('+url+')';
+	document.getElementById('pic_del').setAttribute('data-url',url);
+	document.getElementById('gallery').style.display='block';
+}
+function hiddenpre(){
+	document.getElementById('gallery').style.display='none';
+}
+function deletepic(e){
+	var url=e.getAttribute('data-url');
+	var img = document.getElementById(url);
+    img.parentNode.removeChild(img);
+	document.getElementById('gallery').style.display='none';
+	document.getElementById('picCount').innerHTML=parseInt(document.getElementById('picCount').innerHTML)-1;
+	const del = Bmob.File();
+	const val =  [url]
+	del.destroy(val).then(res => {
+		console.log(res);
+	}).catch(err => {
+		console.log(err)
+	})  
+}
+var content = document.getElementById('content');
+content.addEventListener('input',function () {
+    var len = this.value.length;
+    document.getElementById('textCount').innerHTML = len;
+});
+function submit(){
+	var title=document.getElementById('title').value;
+	var content=document.getElementById('content').value;
+	var site=document.getElementById('site').value;
+	var people=document.getElementById('people').value;
+	console.log(title,content,site,people,picArr)
+	if(!title){
+		alert('请输入标题！');
+	}
+	else if(!content){
+		alert('请输入内容！');
+	}
+	else if(!picArr.length){
+		alert('请添加图片！');
+	}
+	else if(!site){
+		alert('请输入地点！');
+	}
+	else if(!people){
+		alert('请输入小伙伴的昵称');
+	}
+	else{
+		const query = Bmob.Query('squre');
+		query.set("title",title)
+		query.set("content",content)
+		query.set("pic",picArr)
+		query.set("site",site)
+		query.set("people",people)
+		query.save().then(res => {
+			window.location.href='success.html'
+		}).catch(err => {
+			alert('提交失败'+err)
+		})
+	}
+}
+</script>
