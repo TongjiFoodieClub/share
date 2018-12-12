@@ -132,6 +132,7 @@ function deletepic(e){
     img.parentNode.removeChild(img);
 	document.getElementById('gallery').style.display='none';
 	document.getElementById('picCount').innerHTML=parseInt(document.getElementById('picCount').innerHTML)-1;
+	picArr.splice(picArr.indexOf(url),1);
 	const del = Bmob.File();
 	const val =  [url]
 	del.destroy(val).then(res => {
