@@ -11,8 +11,10 @@ body{background-color:#f8f8f8}
 .page__hd{padding:40px}
 .page__title{text-align:left;font-size:20px;font-weight:400}
 .page__desc{margin-top:5px;color:#888;text-align:left;font-size:14px}
+.page{padding:constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left)}
 </style>
 <body>
+  <div class='page'>
 	<div class="page__hd">
         <h1 class="page__title">美食分享</h1>
         <p class="page__desc">同济吃货小分队</p>
@@ -67,10 +69,10 @@ body{background-color:#f8f8f8}
             <div class="weui-cell__bd">
                 <p>小伙伴</p>
             </div>
-            <input class="weui-cell__ft" id='people' style='border:0;width:80%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='和哪些小伙伴一起享受呢'></input>
+            <input class="weui-cell__ft" id='people' style='border:0;width:70%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='和哪些小伙伴一起享受呢'></input>
         </div>
     </div>
-	<div class="weui-btn-area">
+	<div class="weui-btn-area" style='margin-bottom:20'>
         <div class="weui-btn weui-btn_primary" onclick='submit()'>提交</div>
     </div>
 	<div id='gallery' class="weui-gallery" style="display:none">
@@ -88,6 +90,7 @@ body{background-color:#f8f8f8}
             <p class="weui-toast__content">图片上传中</p>
         </div>
     </div>
+  </div>
 </body>
 </html>
 <script type="text/javascript" src="src/Bmob-1.6.3.min.js"></script>
