@@ -177,6 +177,10 @@ function submit(){
 		query.set("people",people)
 		query.save().then(res => {
 			document.getElementById('loadingToast').style.display='none';
+			document.getElementById('title').value="";
+			document.getElementById('content').value="";
+			document.getElementById('site').value="";
+			document.getElementById('people').value="";
 			window.location.href='success.html'
 		}).catch(err => {
 			document.getElementById('loadingToast').style.display='none';
