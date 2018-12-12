@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <title>美食分享</title>
+	<link rel="icon" type="image/x-icon" href="img/food.ico"/>
     <link rel="stylesheet" href="style/weui.min.css"/>
 </head>
 <style>
@@ -72,7 +73,7 @@ body{background-color:#f8f8f8}
             <input class="weui-cell__ft" id='people' style='border:0;width:70%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='和哪些小伙伴一起享受呢'></input>
         </div>
     </div>
-	<div class="weui-btn-area" style='margin-bottom:20'>
+	<div class="weui-btn-area" style='margin-bottom:20px'>
         <div class="weui-btn weui-btn_primary" onclick='submit()'>提交</div>
     </div>
 	<div id='gallery' class="weui-gallery" style="display:none">
@@ -87,7 +88,7 @@ body{background-color:#f8f8f8}
         <div class="weui-mask_transparent"></div>
         <div class="weui-toast">
             <i class="weui-loading weui-icon_toast"></i>
-            <p class="weui-toast__content">图片上传中</p>
+            <p id='loading_content' class="weui-toast__content">图片上传中</p>
         </div>
     </div>
   </div>
@@ -166,6 +167,8 @@ function submit(){
 		alert('请输入小伙伴的昵称');
 	}
 	else{
+		document.getElementById('loading_content').innerHTML='提交中';
+		document.getElementById('loadingToast').style.display='block';
 		const query = Bmob.Query('squre');
 		query.set("title",title)
 		query.set("content",content)
@@ -173,8 +176,10 @@ function submit(){
 		query.set("site",site)
 		query.set("people",people)
 		query.save().then(res => {
+			document.getElementById('loadingToast').style.display='none';
 			window.location.href='success.html'
 		}).catch(err => {
+			document.getElementById('loadingToast').style.display='none';
 			alert('提交失败'+err)
 		})
 	}
