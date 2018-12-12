@@ -20,20 +20,11 @@ body{background-color:#f8f8f8}
         <h1 class="page__title">美食分享</h1>
         <p class="page__desc">同济吃货小分队</p>
     </div>
-	<div class="weui-cells__title">标题</div>
+	<div class="weui-cells__title">一句话分享一下</div>
     <div class="weui-cells">
         <div class="weui-cell">
             <div class="weui-cell__bd">
-                <input id='title' class="weui-input" type="text" placeholder="请输入标题"/>
-            </div>
-        </div>
-    </div>
-    <div class="weui-cells__title">内容</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <textarea id='content' class="weui-textarea" placeholder="请输入内容" rows="3"></textarea>
-                <div class="weui-textarea-counter"><span id="textCount">0</span>/200</div>
+                <input id='title' class="weui-input" type="text" placeholder="请输入分享内容"/>
             </div>
         </div>
     </div>
@@ -43,12 +34,12 @@ body{background-color:#f8f8f8}
                     <div class="weui-uploader">
                         <div class="weui-uploader__hd">
                             <p class="weui-uploader__title">图片上传</p>
-                            <div class="weui-uploader__info"><span id="picCount">0</span>/9</div>
+                            <div class="weui-uploader__info"><span id="picCount">0</span>/1</div>
                         </div>
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
                             </ul>
-                            <div class="weui-uploader__input-box">
+                            <div class="weui-uploader__input-box" id='add_pic'>
                                 <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple/>
                             </div>
                         </div>
@@ -97,7 +88,7 @@ body{background-color:#f8f8f8}
 <script type="text/javascript" src="src/Bmob-1.6.3.min.js"></script>
 <script>
 Bmob.initialize("6967bbe6b3a113a0080572ff2c4ce864", "2c9b309a0ae57f1fc7259a6bbd4d9adf");
-var picArr=[];
+var picurl='';
 const fileUploadControl = document.getElementById('uploaderInput');
 fileUploadControl.onchange = () => {
   document.getElementById('loadingToast').style.display='block';
@@ -108,13 +99,11 @@ fileUploadControl.onchange = () => {
   }
   file.save().then(res => {
 	var ul=document.getElementById('uploaderFiles');
-    for(var i=0;i<res.length;i++){
-		console.log(res[i].url)
-		ul.innerHTML+='<li class="weui-uploader__file" onclick="preview(this)" id='+res[i].url+' style="background-image:url('+res[i].url+')"></li>';
-		picArr.push(res[i].url);
-	}
+	ul.innerHTML+='<li class="weui-uploader__file" onclick="preview(this)" id='+res[0].url+' style="background-image:url('+res[0].url+')"></li>';
+    picurl=res[0].url;
 	document.getElementById('loadingToast').style.display='none';
-	document.getElementById('picCount').innerHTML = res.length;
+	document.getElementById('add_pic').style.display='none';
+	document.getElementById('picCount').innerHTML = 1;
   })
 }
 function preview(e){
@@ -131,8 +120,9 @@ function deletepic(e){
 	var img = document.getElementById(url);
     img.parentNode.removeChild(img);
 	document.getElementById('gallery').style.display='none';
-	document.getElementById('picCount').innerHTML=parseInt(document.getElementById('picCount').innerHTML)-1;
-	picArr.splice(picArr.indexOf(url),1);
+	document.getElementById('picCount').innerHTML=0;
+	document.getElementById('add_pic').style.display='block';
+	picurl='';
 	const del = Bmob.File();
 	const val =  [url]
 	del.destroy(val).then(res => {
@@ -141,24 +131,18 @@ function deletepic(e){
 		console.log(err)
 	})  
 }
-var content = document.getElementById('content');
-content.addEventListener('input',function () {
-    var len = this.value.length;
-    document.getElementById('textCount').innerHTML = len;
-});
 function submit(){
 	var title=document.getElementById('title').value;
 	var content=document.getElementById('content').value;
 	var site=document.getElementById('site').value;
 	var people=document.getElementById('people').value;
-	console.log(title,content,site,people,picArr)
 	if(!title){
 		alert('请输入标题！');
 	}
 	else if(!content){
 		alert('请输入内容！');
 	}
-	else if(!picArr.length){
+	else if(!picurl){
 		alert('请添加图片！');
 	}
 	else if(!site){
@@ -173,7 +157,7 @@ function submit(){
 		const query = Bmob.Query('squre');
 		query.set("title",title)
 		query.set("content",content)
-		query.set("pic",picArr)
+		query.set("pic",picurl)
 		query.set("site",site)
 		query.set("people",people)
 		query.save().then(res => {
