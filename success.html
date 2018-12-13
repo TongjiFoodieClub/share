@@ -16,9 +16,21 @@
         </div>
         <div class="weui-msg__opr-area">
             <p class="weui-btn-area">
-                <a href="javascript:history.go(-1)" class="weui-btn weui-btn_primary">返回</a>
+				<a class="weui-btn weui-btn_primary" onclick='award()'>参与试吃抽奖</a>
+                <a href="javascript:history.back();" class="weui-btn weui-btn_default">返回</a>
             </p>
         </div>
     </div>
+	<div id='gallery' class="weui-gallery" style="display:none">
+        <span id='gallery_img' class="weui-gallery__img" onclick='hiddenpre()' style="background-image: url('img/award.jpg');"></span>
+    </div>
 </body>
 </html>
+<script>
+function award(){
+	document.getElementById('gallery').style.display='block';
+}
+function hiddenpre(){
+	document.getElementById('gallery').style.display='none';
+}
+</script>
