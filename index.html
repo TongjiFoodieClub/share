@@ -86,8 +86,13 @@ body{background-color:#f8f8f8}
 </body>
 </html>
 <script type="text/javascript" src="src/Bmob-1.6.3.min.js"></script>
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=6BABZ-5KBRO-WV6WN-SJANU-D62HV-MCF76&libraries=place"></script>
 <script>
 Bmob.initialize("ffd1649f555b525a1f6ac719429af9f8", "f9327f3fabe8dc3976b74dec9a5eaf56");
+var ap = new qq.maps.place.Autocomplete(document.getElementById('site'), {
+    offset: new qq.maps.Size(0, 5),
+    location: '上海市杨浦区'
+});
 var picurl='';
 const fileUploadControl = document.getElementById('uploaderInput');
 fileUploadControl.onchange = () => {
