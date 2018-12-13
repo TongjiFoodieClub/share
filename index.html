@@ -55,7 +55,7 @@ body{background-color:#f8f8f8}
             <div class="weui-cell__bd">
                 <p>地点</p>
             </div>
-            <input class="weui-cell__ft" onfocus='findsite()' id='site' style='border:0;width:80%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='在哪里吃的美食呀'></input>
+            <input class="weui-cell__ft" id='site' style='border:0;width:80%;font-size:inherit;height:1.47058824em;line-height:1.47058824' placeholder='在哪里吃的美食呀'></input>
         </div>
 		<div class="weui-cell">
             <div class="weui-cell__hd"><img src="img/people.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
@@ -91,6 +91,10 @@ body{background-color:#f8f8f8}
 <script>
 Bmob.initialize("ffd1649f555b525a1f6ac719429af9f8", "f9327f3fabe8dc3976b74dec9a5eaf56");
 var picurl='';
+var ap = new qq.maps.place.Autocomplete(document.getElementById('site'), {
+	offset: new qq.maps.Size(0, 5),
+	location: '上海市杨浦区'
+});
 const fileUploadControl = document.getElementById('uploaderInput');
 fileUploadControl.onchange = () => {
   document.getElementById('loadingToast').style.display='block';
@@ -162,12 +166,6 @@ function deletepic(e){
 	}).catch(err => {
 		console.log(err)
 	})  
-}
-function findsite(){
-	var ap = new qq.maps.place.Autocomplete(document.getElementById('site'), {
-		offset: new qq.maps.Size(0, 5),
-		location: '上海市杨浦区'
-	});
 }
 function submit(){
 	var title=document.getElementById('title').value;
