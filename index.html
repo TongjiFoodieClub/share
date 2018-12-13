@@ -117,20 +117,9 @@ fileUploadControl.onchange = () => {
 		var image = new Image();  
 		image.src= data;  
 		image.onload=function(){  
-			var width,height;
-			if(width<2000&&height<2000){
-				width = image.width*0.5;
-				height = image.height*0.5;
-			}
-			else if(width<4000&&height<4000){
-				width = image.width*0.3;
-				height = image.height*0.3;
-			}
-			else{
-				var mul=1000/(image.width>image.height?image.width:image.height);
-				width=image.width*mul;
-				height=image.height*mul;
-			}
+			var mul=800/(image.width>image.height?image.width:image.height);
+			var width=image.width*mul;
+			var height=image.height*mul;
 			var canvas = document.createElement('canvas');
 			var context = canvas.getContext('2d');
 			canvas.width = width;
