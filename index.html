@@ -97,11 +97,8 @@ var picurl='';
 const fileUploadControl = document.getElementById('uploaderInput');
 fileUploadControl.onchange = () => {
   document.getElementById('loadingToast').style.display='block';
-  const pic = fileUploadControl.files
-  let file
-  for(let item of pic){
-     file = Bmob.File(item.name, item);
-  }
+  const pic = fileUploadControl.files[0];
+  let file = Bmob.File(pic.name, pic);
   file.save().then(res => {
 	var ul=document.getElementById('uploaderFiles');
 	ul.innerHTML+='<li class="weui-uploader__file" onclick="preview(this)" id='+res[0].url+' style="background-image:url('+res[0].url+')"></li>';
