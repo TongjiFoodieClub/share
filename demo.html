@@ -1,0 +1,15 @@
+<iframe id='myFrame' src="https://apis.map.qq.com/ws/place/v1/search?boundary=nearby(31.282628,121.501830,10000)&page_size=20&page_index=1&keyword=鱼酷烤鱼&orderby=_distance&key=6BABZ-5KBRO-WV6WN-SJANU-D62HV-MCF76">
+
+</iframe>
+<script>
+var iframe = document.getElementById('myFrame');
+if (iframe.attachEvent) {
+    iframe.attachEvent("onload", function () {
+        console.log(iframe.contentWindow.document.body.innerHTML);
+    });
+} else {
+    iframe.onload = function () {
+        console.log(iframe.contentWindow.document.body.innerHTML);
+    };
+}
+</script>
